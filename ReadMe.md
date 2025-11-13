@@ -1,74 +1,47 @@
-Dry Wall Segmentation – CLIPSeg Approach
-Overview
-This project uses CLIPSeg, a text-guided segmentation model, to detect cracks and joins in drywall surfaces.
-The focus was on testing prompt-based segmentation for a small, pre-augmented dataset.
+# Dry Wall Segmentation – CLIPSeg Approach
 
-Dataset
-Classes:
+## Overview
+This project uses **CLIPSeg**, a text-guided segmentation model, to detect **cracks** and **joins** in drywall surfaces.  
+The goal was to evaluate prompt-based segmentation on small, pre-augmented datasets.
 
+---
 
-Crack
+## Dataset
+- Two classes: **Crack** and **Join**  
+- Each split (`train`, `val`, `test`) contains:
+  - `images/` – input images  
+  - `masks/` – binary ground-truth masks  
+  - `predictions/` – model outputs  
+- Join dataset contains **bounding box annotations** instead of full segmentation masks.
 
+---
 
-Join
+## Approach
+- Model: **CLIPSeg (CLIPSegForImageSegmentation)**  
+- Text prompts used: `"segment crack"` and `"segment taping area"`  
+- Inference: sigmoid activation applied on logits to generate binary masks.
 
+---
 
-Each split (train, val, test) contains:
+## Loss Function
+- **Binary Cross-Entropy (BCE) Loss**
 
+---
 
-images/ – input images
+## Metrics
+- **IoU (Intersection over Union)**  
+- **Dice Score**  
+- **Pixel Accuracy**
 
+---
 
-masks/ – binary ground-truth masks
+## Outputs
+- `split_metrics.xlsx` – per-image metrics for `train`, `val`, `test`  
+- `metrics_summary.xlsx` – includes `classwise_metrics` and `overall_metrics`  
+- Histograms for IoU, Dice, and Accuracy across each split.
 
+---
 
-predictions/ – model outputs
-
-
-Note: The Join dataset contains bounding box annotations instead of full masks.
-
-Approach
-Model: CLIPSeg (CLIPSegForImageSegmentation)
-Prompts used:
-
-
-segment crack
-
-
-segment join
-
-
-Inference: sigmoid applied on logits to generate binary masks.
-
-Loss Function
-Binary Cross-Entropy (BCE) Loss
-
-Metrics
-
-
-IoU
-
-
-Dice Score
-
-
-Pixel Accuracy
-
-
-
-Output
-
-
-split_metrics.xlsx – per-image metrics for train, val, and test
-
-
-metrics_summary.xlsx – classwise and overall metrics
-
-
-Histograms of IoU, Dice, and Accuracy for each split
-
-
-
-Alternative YOLO Plan
-A prototype YOLO-based segmentation was also tested, using two specialized models (one for each dataset).
-The idea was to use text embeddings and cosine similarity to choose between the models during inference.
+## YOLO Plan
+A separate YOLO-based segmentation approach was also tested using two specialized models (one for cracks and one for joins).  
+The plan was to integrate **text embeddings** and use **cosine similarity** to automatically choose the appropriate model during inference.
