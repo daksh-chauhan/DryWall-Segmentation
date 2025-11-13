@@ -1,0 +1,26 @@
+Dataset Flaws
+
+1. Augmentation Overlap:
+Augmented versions of the same images appeared in multiple splits, causing data leakage.(Significant issue, but retraining wasn't possible due to time and resource limits.)
+Fix: Redefine the splits so all versions of an image remain in a single set.
+
+2. Limited Prompt Variety:
+The text prompts are repetitive and lack phrasing diversity.
+Fix: Adding varied and contextually different prompts for each class.
+
+3. Bounding Box Labels for Joins:
+The join dataset uses bounding boxes instead of proper segmentation masks.
+Fix: Convert bounding boxes into approximate line-based masks during preprocessing.
+
+Model Flaws
+
+4. Minimal Tuning:
+Hyperparameters were barely optimized due to hardware limitations.
+
+5. Limited Model Exploration:
+Only CLIPSeg and YOLO-based approach were tested.
+(the earlier plan was to train two YOLO models, one for cracks and one for join. Then use a text embedding of the input prompt to calculate cosine similarity and automatically choose which model to run).
+
+
+
+A lot of areas of codes are AI-assisted. I've reviewed and corrected what I could, but there might still be small mistakes or clunky parts hiding around.
